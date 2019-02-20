@@ -43,6 +43,7 @@
     - htop
     - ack
     - task
+    - tldr
     become: true
 
   - name: setup my workstation setup repo
