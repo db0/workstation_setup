@@ -7,7 +7,7 @@
   - name: Install ansible from github
     git:
       repo: https://github.com/ansible/ansible.git
-      dest: /home/db0/ansible
+      dest: ~/ansible
 
   - name: Install dev ansible
     pip:
@@ -15,7 +15,7 @@
   
   - name: setup bash environment
     lineinfile:
-      path: /home/db0/.bashrc
+      path: ~/.bashrc
       line: '{{ item }}'
     loop:
     - source ./ansible/hacking/env-setup -q
@@ -44,3 +44,8 @@
     - ack
     - task
     become: true
+
+  - name: setup my workstation setup repo
+    git:
+      repo: https://github.com/db0/workstation_setup.git
+      dest: ~/git/workstation_setup
