@@ -50,3 +50,4 @@
     git:
       repo: https://github.com/db0/workstation_setup.git
       dest: ~/git/workstation_setup
+      update: no # We just need to make sure it's there
