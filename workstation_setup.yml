@@ -13,37 +13,27 @@
     pip:
       requirements: /home/db0/ansible/requirements.txt
   
-  - name: setup bash environment
-    lineinfile:
-      path: ~/.bashrc
-      line: '{{ item }}'
-    loop:
-    - source ./ansible/hacking/env-setup -q
-
   - name: create python -> python3 symlink
     file:
       src: /usr/bin/python3
       dest: /usr/bin/python
       state: link
     become: true
+    ignore_errors: true
  
-  - name: Remove standard ansible now that we have devel
-    dnf:
-      name: ansible
-      state: absent
-    become: true
-
   - name: Install other useful packages
     dnf:
-      name: '{{ item }}'
+      name: 
+      - bat
+      - exa
+      - htop
+      - ack
+      - task
+      - tldr
+      - screen
+      - vim
+      - prettyping
       state: latest
-    loop:
-    - bat
-    - exa
-    - htop
-    - ack
-    - task
-    - tldr
     become: true
 
   - name: setup my workstation setup repo
@@ -51,3 +41,59 @@
       repo: https://github.com/db0/workstation_setup.git
       dest: ~/git/workstation_setup
       update: no # We just need to make sure it's there
+
+  - name: setup .bash_profile
+    file:
+      src: ~/git/workstation_setup/.bash_profile
+      dest: ~/.bash_profile
+      state: link
+      force: true
+
+  - name: setup .bashIncludes
+    file:
+      src: ~/git/workstation_setup/.bashIncludes
+      dest: ~/.bashIncludes
+      state: link
+
+  - name: setup scripts dir
+    file:
+      src: ~/git/workstation_setup/scripts
+      dest: ~/scripts
+      state: link
+
+  - name: setup .privIncludes
+    file:
+      dest: ~/.privIncludes/
+      state: directory
+
+  - name: setup some empty to avoid errors until they're populated
+    file:
+      dest: "{{ item }}"
+      state: touch
+    loop:
+    - ~/.privIncludes/vars.bash
+    - ~/.bash_completion
+
+  - name: delete .bashrc if it exists
+    file:
+      dest: ~/.bashrc
+      state: absent
+
+  - name: setup basic vars in new .bashrc
+    lineinfile:
+      path: ~/.bashrc
+      line: "{{ item }}"
+      create: true
+    loop:
+    - "export SCRIPTS=~/scripts"
+    - "export PRIV_DESKTOP={{ansible_hostname}}"
+    - "export SERV_ACC={{ansible_user_id}}"
+    - "source ~/ansible/hacking/env-setup -q"
+    - "source ./.bash_profile"
+
+  - name: Remove standard ansible now that we have devel
+    dnf:
+      name: ansible
+      state: absent
+    become: true
+

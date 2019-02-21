@@ -1,8 +1,4 @@
-# Last Edited
-# 21/02/2019
-
 #!!! Remember to change this when changing desktop names !!!
-PRIV_DESKTOP="bloodshot"
 
 ### Fix to load the ${SERV_ACC} profile on other systems with some setup
 if [ $(hostname) != $PRIV_DESKTOP ]
@@ -97,7 +93,6 @@ if [ `hostname` == $PRIV_DESKTOP ]; then
    alias top='htop'
    alias rsync='rsync --info=progress2'
    alias cat='bat'
-   alias ansible='ansible-3'
 else
    alias ll='ls -lart'
 fi
@@ -196,3 +191,4 @@ then
 else
 	source ~/.bash_completion
 fi
+source ~/ansible/hacking/env-setup -q
