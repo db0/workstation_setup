@@ -36,6 +36,15 @@
       state: latest
     become: true
 
+
+  - name: setup some expected dirs
+    file:
+      dest: "{{ item }}"
+      state: directory
+    loop:
+    - "~/.privIncludes/"
+    - "~/git/"
+
   - name: setup my workstation setup repo
     git:
       repo: https://github.com/db0/workstation_setup.git
@@ -61,11 +70,6 @@
       dest: ~/scripts
       state: link
 
-  - name: setup .privIncludes
-    file:
-      dest: ~/.privIncludes/
-      state: directory
-
   - name: delete .bashrc if it exists
     file:
       dest: ~/.bashrc
@@ -79,10 +83,10 @@
     loop:
     - "export SCRIPTS=~/scripts"
     - "export PRIV_DESKTOP={{ansible_hostname}}"
-    - "export SERV_ACC={{ansible_user_id}}"
+    - "export SERV_ACC={{ansible_user_id}} # Change this to the account you use to login to other hosts if your not your local username (e.g. root)"
     - "source ~/ansible/hacking/env-setup -q"
     - "shopt -q login_shell || source ~/.bash_profile" # We don't want to end up in an infinite loop
-    - "[[ -r ~/.bash_completion ]] && source ~/.bash_completion"
+    - "[[ -r ~/.bash_completion ]] && source ~/.bash_completion # If you have a bash_completion source, put it here"
 
   - name: Remove standard ansible now that we have devel
     dnf:
