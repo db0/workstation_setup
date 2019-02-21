@@ -21,11 +21,11 @@ else
    screen -X chdir $wd
    # Ask screen to run the command
    if [ $cmd == "ssh" ]; then
-       screen -t ""${1##*@}"" ${SCRIPTS}/screen_ssh.sh $*
-	elif [ $cmd == "console" ]; then
+      screen -t ""${1##*@}"" ${SCRIPTS}/screen_ssh.sh $*
+   elif [ $cmd == "console" ]; then
       screen -t ""${1##*@}-CONS"" ${SCRIPTS}/screen_ssh.sh -tt ${SERV_ACC}@${CONSOLE_SRV} console $* 
-      else
-         screen -t "$cmd $*" $cmd $*
+   else
+      screen -t "$cmd $*" $cmd $*
    fi
 fi
 
@@ -35,11 +35,11 @@ fi
 function screentitle() { echo -ne "\033k${1}\033\\" ; } # legacy support 
 
 function s() {
-	if [ `echo $@ | grep -v '\-sc'` ]; then
+   if [ `echo $@ | grep -v '\-sc'` ]; then
       scr ssh "$@" -ttl ${SERV_ACC} exec bash --rcfile /tmp/bash_profile.tmp -i 
    else
       scr ssh "${SERV_ACC}@$@"
-	fi
+   fi
 }
 
 function z() {
@@ -52,27 +52,30 @@ function z() {
 [ $TERM == screen ] && screentitle `hostname` # To make sure I get the hostname after connecting to a LH
 
 function vi() {
-  if [ `hostname` == $PRIV_DESKTOP ]
-    then  
-	scr vim $*
-    else
-	/bin/vi $*
-  fi
+   if [ `hostname` == $PRIV_DESKTOP ]
+   then  
+      scr vim $*
+   else
+      /bin/vi $*
+   fi
 }
 
 function man() {
-	scr /usr/bin/man $*
+   scr /usr/bin/man $*
 }
 
 function watch() {
-	scr /usr/bin/watch $*
+   scr /usr/bin/watch $*
 }
 
 function c() {
-	scr console $*
+   scr console $*
 }
 
-
 function top() {
-	scr /usr/bin/top
+   scr htop
+}
+
+function less() {
+   scr less
 }

@@ -66,14 +66,6 @@
       dest: ~/.privIncludes/
       state: directory
 
-  - name: setup some empty to avoid errors until they're populated
-    file:
-      dest: "{{ item }}"
-      state: touch
-    loop:
-    - ~/.privIncludes/vars.bash
-    - ~/.bash_completion
-
   - name: delete .bashrc if it exists
     file:
       dest: ~/.bashrc
@@ -89,7 +81,8 @@
     - "export PRIV_DESKTOP={{ansible_hostname}}"
     - "export SERV_ACC={{ansible_user_id}}"
     - "source ~/ansible/hacking/env-setup -q"
-    - "source ./.bash_profile"
+    - "shopt -q login_shell || source ~/.bash_profile" # We don't want to end up in an infinite loop
+    - "[[ -r ~/.bash_completion ]] && source ~/.bash_completion"
 
   - name: Remove standard ansible now that we have devel
     dnf:
