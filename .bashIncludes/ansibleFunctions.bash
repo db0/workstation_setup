@@ -5,12 +5,12 @@
 function af () ( 
 # Allows you to run ansible on an ad-hoc list of hosts you've put into your ~/hosts file. 
 # You need to enable root as default user in your /etc/ansible/ansible.conf!
-   ansible-3 all -i $HOME/hosts -t ~/.AnsibleLogs -m shell -a "$1"
+   ansible all -i $HOME/hosts -t ~/.AnsibleLogs -m shell -a "$1"
 )
 
 function afr () (
 # Same as af, but using the "raw" module to be compatible with all OS. Cannot be used with async.
-   ansible-3 all -i $HOME/hosts -t ~/.AnsibleLogs -m raw -a "$1"
+   ansible all -i $HOME/hosts -t ~/.AnsibleLogs -m raw -a "$1"
 )
 
 
