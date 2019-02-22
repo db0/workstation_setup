@@ -75,7 +75,3 @@ function c() {
 function top() {
    scr htop
 }
-
-function less() {
-   scr less
-}
