@@ -93,7 +93,6 @@
       src: ~/git/workstation_setup/.screenrc
       dest: ~/.screenrc
       state: link
-      force: true
 
   - name: create .screenrc logs directory
     file:
