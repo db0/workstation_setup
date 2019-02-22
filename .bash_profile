@@ -87,11 +87,9 @@ echo "scale=1; $(df -k | egrep -e '(/dev/|rpool)' | grep -v /fd | grep -v cdrom 
 #      Personal sourcing
 ############################################################################
 if [ $(hostname) == "${PRIV_DESKTOP}" ]; then
-   if [ -r ~/.privIncludes/*.bash ]; then
-      for FILE in ~/.privIncludes/*.bash; do
-         source $FILE
-      done
-   fi
+   for FILE in ~/.privIncludes/*.bash; do
+      source $FILE
+   done
    for FILE in ~/.bashIncludes/*.bash; do
       source $FILE
    done
