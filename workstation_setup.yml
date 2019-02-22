@@ -33,6 +33,7 @@
       - screen
       - vim
       - prettyping
+      - geany
       state: latest
     become: true
 
