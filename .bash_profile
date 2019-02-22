@@ -2,14 +2,13 @@
 [[ -r ~/.bashrc ]] && shopt -q login_shell && . ~/.bashrc
 
 ### Fix to load the ${SERV_ACC} profile on other systems with some setup
-if [ $(hostname) != $PRIV_DESKTOP ]
+if [ -z "$PRIV_DESKTOP" ]
 then
    [ $(uname | grep SunOS) ] && [[ -r .profile ]] && source .profile
    [[ -r /tmp/corpVars.bash.tmp ]] && source /tmp/corpVars.bash.tmp 
    PATH=${PATH}:/bin:${CORPPATHS}
    [ $(uname | grep Linux) ] && [[ -r .bash_profile ]] && source .bash_profile 
 fi
-
 
 case $OSTYPE in
         FreBSD*)
@@ -67,7 +66,7 @@ alias lsopen='lsof +aL1'
 #Local aliases for myself.
 alias pycharm='~/Tools/pycharm/latest/bin/pycharm.sh &'
 alias t='task +READY' # Taskwarrior
-if [ `hostname` == $PRIV_DESKTOP ]; then
+if [ ! -z "$PRIV_DESKTOP" ]; then
    alias ls='exa --git'
    alias ll='exa --git -larsold'
    alias ping='prettyping'
@@ -86,7 +85,7 @@ echo "scale=1; $(df -k | egrep -e '(/dev/|rpool)' | grep -v /fd | grep -v cdrom 
 ############################################################################
 #      Personal sourcing
 ############################################################################
-if [ $(hostname) == "${PRIV_DESKTOP}" ]; then
+if [ ! -z "$PRIV_DESKTOP" ]; then
    for FILE in ~/.privIncludes/*.bash; do
       source $FILE
    done
@@ -94,7 +93,6 @@ if [ $(hostname) == "${PRIV_DESKTOP}" ]; then
       source $FILE
    done
 fi
-
 ############################################################################
 #      Portable Solaris functions and aliases
 ############################################################################
@@ -120,7 +118,7 @@ RED="\[\033[0;31m\]";GREEN="\[\033[0;32m\]";LIGHT_GREEN="\[\033[1;32m\]";LIGHT_R
 
 if [ $($P_ID -u) -eq 0 ];
 then
-   if [ $(hostname) == "${PRIV_DESKTOP}" ]
+   if [ ! -z "$PRIV_DESKTOP" ]
    then
       STR_COLOUR=$LIGHT_GREEN
    else
@@ -133,7 +131,7 @@ then
    fi
 	ID_COLOUR=$LIGHT_CYAN
 else
-   if [ $(hostname) == "${PRIV_DESKTOP}" ]
+   if [ ! -z "$PRIV_DESKTOP" ]
    then
       STR_COLOUR=$GREEN
    else
@@ -149,7 +147,7 @@ fi
 
 [ `zone-where 2>/dev/null` ] && GLOBAL_ZONE=":`zone-where`" # bit of Solaris prompt magic
 PS1="${TITLEBAR}[${ID_COLOUR}\u${NO_COLOUR}@${STR_COLOUR}\h${PURPLE}$GLOBAL_ZONE${NO_COLOUR}]\w${NO_COLOUR}\$ "
-if [ $(hostname) == "${PRIV_DESKTOP}" ]
+if [ ! -z "$PRIV_DESKTOP" ]
 then
    if [ -z "$BASH" ]; then bash
    else
@@ -172,8 +170,7 @@ export PS1
 ############################################################################
 #    Cleanup of my profile of business hosts I'm connecting to 
 ############################################################################
-
-if [ $(hostname) != "$PRIV_DESKTOP" ]
+if [ -z "$PRIV_DESKTOP" ]
 then
 	rm -f /tmp/bash_profile.tmp /tmp/*.bash.tmp 
 fi
