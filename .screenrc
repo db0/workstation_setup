@@ -1,0 +1,37 @@
+hardstatus alwayslastline
+
+hardstatus string '%?%{= kR}[%{R}%0`]%?%?[%1`]%?%?[%2`%{R}]%?%{= kG}[%= %{g}%?%-w%?%{r}(%{W}%n*%t%?(%u)%?%{r})%{G}%?%+w%?%= %{G}]'
+
+### Defaults ###
+defscrollback 10000
+shelltitle "b0rk"
+termcapinfo xterm* ti@:te@
+
+#shell -bash
+startup_message off
+
+### Keyboard Shortcuts ###
+bindkey ^[[1;5D prev # change window with ctrl-left (Un*x)
+bindkey ^[[1;5C next # change window with ctrl-right (Un*x)
+bindkey "^[[D" prev  # change window with ctrl-left (Putty)
+bindkey "^[[C" next  # change window with ctrl-right (Putty)
+
+
+### Backticks ###
+#Shows [DSK] at screen hardstatus, when one of my local disks is 90%+ filled
+backtick 0 300 300 bash -c 'df -h | egrep -q '\''9[0-9]+%|100%'\'' && echo DSK'
+#Shows [MEM] at the screen hardstatus, when my local free mem is less than 300MB
+backtick 1 30 30 bash -c 'if [ $(free -m | grep Mem |  awk '\''{print $4}'\'') -le 300 ]; then echo MEM; fi'
+#Shows [SWP] at the screen hardstatus, when my local free swap is less than 300MB
+backtick 1 30 30 bash -c 'if [ $(free -m | grep Swap |  awk '\''{print $4}'\'') -le 300 ]; then echo SWP; fi'
+ 
+### Logging ###
+deflog on
+logfile $HOME/.Screenlogs/screenlog-%t_%Y-%m-%d_%0c%s.log
+logtstamp on
+
+### Default screens ###
+screen -t STFU	0
+screen -t JUMP	1
+screen -t RTFM	2
+

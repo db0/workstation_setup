@@ -88,9 +88,20 @@
     - "shopt -q login_shell || source ~/.bash_profile" # We don't want to end up in an infinite loop
     - "[[ -r ~/.bash_completion ]] && source ~/.bash_completion # If you have a bash_completion source, put it here"
 
+  - name: setup .screenrc
+    file:
+      src: ~/git/workstation_setup/.screenrc
+      dest: ~/.screenrc
+      state: link
+      force: true
+
+  - name: create .screenrc logs directory
+    file:
+      dest: ~/.Screenlogs
+      state: directory
+
   - name: Remove standard ansible now that we have devel
     dnf:
       name: ansible
       state: absent
     become: true
-
