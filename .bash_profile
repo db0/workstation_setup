@@ -114,7 +114,21 @@ alias clrsnaps='zfs list -t snapshot -o name -H | while read a; do echo Destroyi
 #      PROMPT 
 ############################################################################
 
-RED="\[\033[0;31m\]";GREEN="\[\033[0;32m\]";LIGHT_GREEN="\[\033[1;32m\]";LIGHT_RED="\[\033[1;31m\]";WHITE="\[\033[1;37m\]";NO_COLOUR="\[\033[0m\]";CYAN="\[\033[0;36m\]";YELLOW="\[\033[0;33m\]";LIGHT_CYAN="\[\033[1;36m\]";LIGHT_YELLOW="\[\033[1;33m\]";PURPLE="\[\033[0;35m\]";LIGHT_PURPLE="\[\033[1;35m\]"
+RED="\[\033[0;31m\]"
+GREEN="\[\033[0;32m\]"
+LIGHT_GREEN="\[\033[1;32m\]"
+LIGHT_RED="\[\033[1;31m\]"
+WHITE="\[\033[1;37m\]"
+NO_COLOUR="\[\033[0m\]"
+CYAN="\[\033[0;36m\]"
+YELLOW="\[\033[0;33m\]"
+LIGHT_CYAN="\[\033[1;36m\]"
+LIGHT_YELLOW="\[\033[1;33m\]"
+PURPLE="\[\033[0;35m\]"
+LIGHT_PURPLE="\[\033[1;35m\]"
+# Bold
+BRed='\[\e[1;31m\]'        # Red
+BGreen='\[\e[1;32m\]'      # Green
 
 if [ $($P_ID -u) -eq 0 ];
 then
@@ -145,8 +159,15 @@ else
    ID_COLOUR=$CYAN
 fi
 
+TICK="✓"
+CROSS="✗"
+
 [ `zone-where 2>/dev/null` ] && GLOBAL_ZONE=":`zone-where`" # bit of Solaris prompt magic
-PS1="${TITLEBAR}[${ID_COLOUR}\u${NO_COLOUR}@${STR_COLOUR}\h${PURPLE}$GLOBAL_ZONE${NO_COLOUR}]\w${NO_COLOUR}\$ "
+if [ ! -z "$PRIV_DESKTOP" ]; then
+   PS1="${TITLEBAR}[${ID_COLOUR}\u${NO_COLOUR}@${STR_COLOUR}\h${PURPLE}$GLOBAL_ZONE${NO_COLOUR}]["'$(BRANCH=$(git rev-parse --abbrev-ref HEAD 2> /dev/null); if [ -n "$BRANCH" ]; then DIRTY=$(git status --porcelain --untracked-files=no 2> /dev/null); if [ -n "$DIRTY" ]; then echo "'${BRed}'${CROSS}"; else echo "'${BGreen}'${TICK}"; fi; fi;)'"${NO_COLOUR}]\w $(task_indicator) "
+else
+   PS1="${TITLEBAR}[${ID_COLOUR}\u${NO_COLOUR}@${STR_COLOUR}\h${PURPLE}$GLOBAL_ZONE${NO_COLOUR}]\w${NO_COLOUR}\$"
+fi
 if [ ! -z "$PRIV_DESKTOP" ]
 then
    if [ -z "$BASH" ]; then bash

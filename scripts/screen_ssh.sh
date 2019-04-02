@@ -5,7 +5,7 @@ do
 
 	if $(echo $1 | grep -vq '\-sc')
 	then
-	        scp -q ~/bash_profile.tmp ~/.privIncludes/*.bash.tmp root@$1:/tmp/
+	        scp -q ~/bash_profile.tmp ~/.privIncludes/*.bash.tmp root@$1:/tmp/ 2>/dev/null
 	fi
 
 
