@@ -161,10 +161,12 @@ fi
 
 TICK="✓"
 CROSS="✗"
+PROMPT_CROSS="${NO_COLOUR}[${BRed}${CROSS}${NO_COLOUR}]"
+PROMPT_TICK="${NO_COLOUR}[${BGreen}${TICK}${NO_COLOUR}]"
 
 [ `zone-where 2>/dev/null` ] && GLOBAL_ZONE=":`zone-where`" # bit of Solaris prompt magic
 if [ ! -z "$PRIV_DESKTOP" ]; then
-   PS1="${TITLEBAR}[${ID_COLOUR}\u${NO_COLOUR}@${STR_COLOUR}\h${PURPLE}$GLOBAL_ZONE${NO_COLOUR}]["'$(BRANCH=$(git rev-parse --abbrev-ref HEAD 2> /dev/null); if [ -n "$BRANCH" ]; then DIRTY=$(git status --porcelain --untracked-files=no 2> /dev/null); if [ -n "$DIRTY" ]; then echo "'${BRed}'${CROSS}"; else echo "'${BGreen}'${TICK}"; fi; fi;)'"${NO_COLOUR}]\w $(task_indicator) "
+   PS1="${TITLEBAR}[${ID_COLOUR}\u${NO_COLOUR}@${STR_COLOUR}\h${PURPLE}$GLOBAL_ZONE${NO_COLOUR}]$(BRANCH=$(git rev-parse --abbrev-ref HEAD 2> /dev/null); if [ -n "$BRANCH" ]; then DIRTY=$(git status --porcelain --untracked-files=no 2> /dev/null); if [ -n "$DIRTY" ]; then echo "${PROMPT_CROSS}"; else echo "${PROMPT_TICK}"; fi; fi;)${NO_COLOUR}\w $(task_indicator) "
 else
    PS1="${TITLEBAR}[${ID_COLOUR}\u${NO_COLOUR}@${STR_COLOUR}\h${PURPLE}$GLOBAL_ZONE${NO_COLOUR}]\w${NO_COLOUR}\$"
 fi
