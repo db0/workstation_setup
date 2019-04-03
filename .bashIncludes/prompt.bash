@@ -7,6 +7,8 @@ OVERDUE="☠️ "
 DUETODAY="😱"
 DUETOMORROW="📅"
 
+[ ! -r ~/.taskrc ] && yes | task > /dev/null 2>&1 # We need to check if the task has been started at least once to prevent bashrc getting stuck    
+
 function task_indicator {
     if [ `task +READY +OVERDUE count` -gt "0" ]; then
         echo "$OVERDUE"
