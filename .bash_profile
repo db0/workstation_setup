@@ -161,7 +161,7 @@ fi
 if [ ! -z "$PRIV_DESKTOP" ]; then
    PS1="${TITLEBAR}[${ID_COLOUR}\u${NO_COLOUR}@${STR_COLOUR}\h${PURPLE}$GLOBAL_ZONE${NO_COLOUR}]"'$(git_indicator)'"${NO_COLOUR}\w"'$(task_indicator) '
 else
-   PS1="${TITLEBAR}[${ID_COLOUR}\u${NO_COLOUR}@${STR_COLOUR}\h${PURPLE}$GLOBAL_ZONE${NO_COLOUR}]\w${NO_COLOUR}\$"
+   PS1="${TITLEBAR}[${ID_COLOUR}\u${NO_COLOUR}@${STR_COLOUR}\h${PURPLE}$GLOBAL_ZONE${NO_COLOUR}]\w${NO_COLOUR}\$ "
 fi
 if [ ! -z "$PRIV_DESKTOP" ]
 then
