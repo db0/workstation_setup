@@ -6,7 +6,7 @@
 ## var="$(echo -n '✅' | od -An -tx1)"; printf '\\x%s' ${var^^}; echo
 
 URGENT=$'[\xE2\x9D\x97]' # ❗
-OVERDUE=$'[\xE2\x98\xA0\xEF\xB8\x8F]' # ☠️
+OVERDUE=$'[\xE2\x98\xA0\xEF\xB8\x8F ]' # ☠️
 DUETODAY=$'[\xF0\x9F\x98\xB1]' # 😱
 DUETOMORROW=$'[\xF0\x9F\x93\x85]' # 📅
 
