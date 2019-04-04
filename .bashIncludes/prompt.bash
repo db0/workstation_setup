@@ -2,10 +2,10 @@
 #      Task Warrior in the Prompt 
 ############################################################################
 
-URGENT="❗"
-OVERDUE="☠️ "
-DUETODAY="😱"
-DUETOMORROW="📅"
+URGENT=$'[\xe2\x9d\x97]' # ❗
+OVERDUE=$'[\xe2\x98\xa0\xef\xb8\x8f]' # ☠️
+DUETODAY=$'[\xf0\x9f\x98\xb1]' # 😱
+DUETOMORROW=$'[\xf0\x9f\x93\x85]' # 📅
 
 [ ! -r ~/.taskrc ] && yes | task > /dev/null 2>&1 # We need to check if the task has been started at least once to prevent bashrc getting stuck    
 
@@ -18,8 +18,6 @@ function task_indicator {
         echo "$DUETOMORROW"
     elif [ `task +READY urgency \> 10 count` -gt "0" ]; then
         echo "$URGENT"
-    else
-        echo '$'
     fi
 }
 

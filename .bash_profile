@@ -158,10 +158,10 @@ fi
 
 
 [ `zone-where 2>/dev/null` ] && EXTRA_PROMPT=":$(zone-where)" # bit of Solaris prompt magic
-[ $(uname | grep Linux) ] && EXTRA_PROMPT=":$(lsb_release -a | grep Release | awk '{print $2}')" # Putting the RHEL version in the prompt.
+[ $(uname | grep Linux) ] && [ -z "$PRIV_DESKTOP" ] && EXTRA_PROMPT=":$(lsb_release -a | grep Release | awk '{print $2}')" # Putting the RHEL version in the prompt.
 
 if [ ! -z "$PRIV_DESKTOP" ]; then
-   PS1="${TITLEBAR}[${ID_COLOUR}\u${NO_COLOUR}@${STR_COLOUR}\h${RED}$EXTRA_PROMPT${NO_COLOUR}]"'$(git_indicator)'"${NO_COLOUR}\w"'$(task_indicator) '
+   PS1="${TITLEBAR}[${ID_COLOUR}\u${NO_COLOUR}@${STR_COLOUR}\h${RED}$EXTRA_PROMPT${NO_COLOUR}]"'$(git_indicator)$(task_indicator)'"${NO_COLOUR}\w\$ "
 else
    PS1="${TITLEBAR}[${ID_COLOUR}\u${NO_COLOUR}@${STR_COLOUR}\h${RED}$EXTRA_PROMPT${NO_COLOUR}]\w${NO_COLOUR}\$ "
 fi
