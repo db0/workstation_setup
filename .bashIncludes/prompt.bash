@@ -2,7 +2,21 @@
 #      Task Warrior in the Prompt 
 ############################################################################
 
-## Nice Command to grab unicode 
+hexFromGlyph(){ 
+## Nice Function to grab unicode codes
+## usage: $ hexFromGlyph ☠ ✿ \xE2\x98\xA0 \xE2\x9C\xBF $ hexFromGlyph -n ☠ ✿ \xE2\x98\xA0 \xE2\x9C\xBF
+## Source: https://stackoverflow.com/questions/602912/how-do-you-echo-a-4-digit-unicode-character-in-bash#comment53918435_5760420
+   if [ "$1" == "-n" ]; then 
+      outputSeparator=' '
+      shift
+   else 
+      outputSeparator='\n'
+   fi 
+   for glyph in "$@"; do 
+      printf "\\\x%s" $(printf "$glyph"|xxd -p -c1 -u)
+      echo -n -e "$outputSeparator"
+   done 
+}
 ## var="$(echo -n '✅' | od -An -tx1)"; printf '\\x%s' ${var^^}; echo
 
 URGENT=$'[\xE2\x9D\x97]' # ❗
