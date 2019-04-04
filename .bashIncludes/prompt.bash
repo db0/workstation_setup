@@ -17,7 +17,6 @@ hexFromGlyph(){
       echo -n -e "$outputSeparator"
    done 
 }
-## var="$(echo -n '✅' | od -An -tx1)"; printf '\\x%s' ${var^^}; echo
 
 URGENT=$'[\xE2\x9D\x97]' # ❗
 OVERDUE=$'[\xE2\x98\xA0\xEF\xB8\x8F ]' # ☠️
