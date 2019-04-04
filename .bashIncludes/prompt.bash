@@ -2,22 +2,6 @@
 #      Task Warrior in the Prompt 
 ############################################################################
 
-hexFromGlyph(){ 
-## Nice Function to grab unicode codes
-## usage: $ hexFromGlyph ☠ ✿ \xE2\x98\xA0 \xE2\x9C\xBF $ hexFromGlyph -n ☠ ✿ \xE2\x98\xA0 \xE2\x9C\xBF
-## Source: https://stackoverflow.com/questions/602912/how-do-you-echo-a-4-digit-unicode-character-in-bash#comment53918435_5760420
-   if [ "$1" == "-n" ]; then 
-      outputSeparator=' '
-      shift
-   else 
-      outputSeparator='\n'
-   fi 
-   for glyph in "$@"; do 
-      printf "\\\x%s" $(printf "$glyph"|xxd -p -c1 -u)
-      echo -n -e "$outputSeparator"
-   done 
-}
-
 URGENT=$'[\xE2\x9D\x97]' # ❗
 OVERDUE=$'[\xE2\x98\xA0\xEF\xB8\x8F ]' # ☠️
 DUETODAY=$'[\xF0\x9F\x98\xB1]' # 😱
@@ -60,3 +44,23 @@ function git_indicator {
       fi; 
    fi;
 }
+
+############################################################################
+#      Other relevant stuff
+############################################################################
+
+hexFromGlyph(){ 
+## Nice Function to grab unicode codes
+## Source: https://stackoverflow.com/questions/602912/how-do-you-echo-a-4-digit-unicode-character-in-bash#comment53918435_5760420
+   if [ "$1" == "-n" ]; then 
+      outputSeparator=' '
+      shift
+   else 
+      outputSeparator='\n'
+   fi 
+   for glyph in "$@"; do 
+      printf "\\\x%s" $(printf "$glyph"|xxd -p -c1 -u)
+      echo -n -e "$outputSeparator"
+   done 
+}
+
