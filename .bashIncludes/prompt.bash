@@ -32,12 +32,15 @@ RemColour="\033[0m"
 
 GIT_OK=$'[\xE2\x9C\x85]' # ✅
 GIT_NOK=$'[\xE2\x9D\x8C]' # ❌
+GIT_DIRTY=$'[\xF0\x9F\x9A\xA7]' # 🚧
 
 function git_indicator {
    BRANCH=$(git rev-parse --abbrev-ref HEAD 2> /dev/null)
    if [ -n "$BRANCH" ]; then
       DIRTY=$(git status --porcelain --untracked-files=no 2> /dev/null); 
       if [ -n "$DIRTY" ]; then 
+         echo -e "${GIT_DIRTY}"
+      elif [ $(git rev-parse HEAD) != $(git rev-parse @{u}) ]; then
          echo -e "${GIT_NOK}"
       else 
          echo -e "${GIT_OK}"
