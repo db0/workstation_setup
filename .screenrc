@@ -1,6 +1,13 @@
 hardstatus alwayslastline
 
-hardstatus string '%?%{= kR}[%{R}%0`]%?%?[%1`]%?%?[%2`%{R}]%?%{= kG}[%= %{g}%?%-w%?%{r}(%{W}%n*%t%?(%u)%?%{r})%{G}%?%+w%?%= %{G}]'
+hardstatus string '%{= kR}%?[%0`]%?%?[%5`]%?%?[%1`]%?%?[%2`]%?%?[%3`]%?%?[%4`]%?%{= kG}[%= %{g}%?%-w%?%{r}(%{W}%n*%t%?(%u)%?%{r})%{G}%?%+w%?%= %{G}]'
+# My GNU Screen Hardstatus explanation:
+# Set my hardstatus colour to Red on Black for my backticks. All my backticks will be wrapped inside [Red Sq. Brackets] if they return anything.
+# My Backticks are documented below. They return a few Unicodes, based on my local system status
+# Then set my hardstatus colour to Green on Black for my open sessions. 
+# My Session hardstatus will be center-aligned
+# My currently focused session will be wrapped in (Red Brackets) and the text will be white instead of green
+
 
 ### Defaults ###
 defscrollback 10000
@@ -16,15 +23,24 @@ bindkey ^[[1;5C next # change window with ctrl-right (Un*x)
 bindkey "^[[D" prev  # change window with ctrl-left (Putty)
 bindkey "^[[C" next  # change window with ctrl-right (Putty)
 
+# We need to check if the task has been started at least once to prevent things getting stuck    
+bash -c '[ ! -r ~/.taskrc ] && yes | task > /dev/null 2>&1'
 
 ### Backticks ###
-#Shows [DSK] at screen hardstatus, when one of my local disks is 90%+ filled
-backtick 0 300 300 bash -c 'df -h | egrep -q '\''9[0-9]+%|100%'\'' && echo DSK'
-#Shows [MEM] at the screen hardstatus, when my local free mem is less than 300MB
-backtick 1 30 30 bash -c 'if [ $(free -m | grep Mem |  awk '\''{print $4}'\'') -le 300 ]; then echo MEM; fi'
-#Shows [SWP] at the screen hardstatus, when my local free swap is less than 300MB
-backtick 1 30 30 bash -c 'if [ $(free -m | grep Swap |  awk '\''{print $4}'\'') -le 300 ]; then echo SWP; fi'
+#Shows [💽] at screen hardstatus, when one of my local disks is 90%+ filled
+backtick 0 60 60 bash -c 'df -h | egrep -q '\''9[0-9]+%|100%'\'' && echo 💽'
+#Shows [🐏] at the screen hardstatus, when my local free mem is less than 300MB
+backtick 1 5 5 bash -c 'if [ $(free -m | grep Mem |  awk '\''{print $4}'\'') -le 300 ]; then echo 🐏; fi'
+#Shows [😩] at the screen hardstatus, when my local free swap is less than 300MB
+backtick 2 5 5 bash -c 'if [ $(free -m | grep Swap |  awk '\''{print $4}'\'') -le 300 ]; then echo 😩; fi'
+#Shows [📨] at the screen hardstatus, when I have new tickets assigned. (You should have a cronjob putting the number of tickets in ~/TicketsAssigned)
+backtick 3 5 5 bash -c 'if [ $(cat ~/TicketsAssigned) -ge 1 ]; then echo 📨; fi'
+#Shows A set of unicodes for TaskWarrior state. Screen doesn't like multiline splits so all in one big line
+backtick 4 5 5 bash -c 'if [ `task +READY +OVERDUE count` -gt "0" ]; then echo "☠️ "; elif [ `task +READY +DUETODAY count` -gt "0" ]; then echo "😱"; elif [ `task +READY +TOMORROW count` -gt "0" ]; then echo "📅"; elif [ `task +READY urgency \> 10 count` -gt "0" ]; then echo "❗"; fi'
+#Shows [🔥] at screen hardstatus, when my CPU load average is higher than 8. Increase this number to something that makes sense for the amount of CPUs in your system
+backtick 5 5 5 bash -c 'if (( $(echo "$(cat /proc/loadavg | awk '\''{print $1}'\'') > 8" | bc -l) )); then echo 🔥; fi'
  
+
 ### Logging ###
 deflog on
 logfile $HOME/.Screenlogs/screenlog-%t_%Y-%m-%d_%0c%s.log

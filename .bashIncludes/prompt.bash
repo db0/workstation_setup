@@ -10,6 +10,7 @@ DUETOMORROW=$'[\xF0\x9F\x93\x85]' # 📅
 [ ! -r ~/.taskrc ] && yes | task > /dev/null 2>&1 # We need to check if the task has been started at least once to prevent bashrc getting stuck    
 
 function task_indicator {
+    exit 0 # Prompt moved to GNU Screen. Comment this line if you prefer it to be in your bash prompt (as well)
     if [ `task +READY +OVERDUE count` -gt "0" ]; then
         echo "$OVERDUE"
     elif [ `task +READY +DUETODAY count` -gt "0" ]; then
