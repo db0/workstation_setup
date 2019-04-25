@@ -1,6 +1,6 @@
 hardstatus alwayslastline
 
-hardstatus string '%{= kR}%?[%0`]%?%?[%5`]%?%?[%1`]%?%?[%2`]%?%?[%3`]%?%?[%4`]%?%{= kG}[%= %{g}%?%-w%?%{r}(%{W}%n*%t%?(%u)%?%{r})%{G}%?%+w%?%= %{G}]'
+hardstatus string '%{= kR}%?[%0`]%?%?[%5`]%?%?[%1`]%?%?[%2`]%?%?[%3`]%?%?[%4`]%?%?[%6`]%?%{= kG}[%= %{g}%?%-w%?%{r}(%{W}%n*%t%?(%u)%?%{r})%{G}%?%+w%?%= %{G}]'
 # My GNU Screen Hardstatus explanation:
 # Set my hardstatus colour to Red on Black for my backticks. All my backticks will be wrapped inside [Red Sq. Brackets] if they return anything.
 # My Backticks are documented below. They return a few Unicodes, based on my local system status
@@ -39,6 +39,8 @@ backtick 3 5 5 bash -c 'if [ $(cat ~/TicketsAssigned) -ge 1 ]; then echo 📨; f
 backtick 4 5 5 bash -c 'if [ `task +READY +OVERDUE count` -gt "0" ]; then echo "☠️ "; elif [ `task +READY +DUETODAY count` -gt "0" ]; then echo "😱"; elif [ `task +READY +TOMORROW count` -gt "0" ]; then echo "📅"; elif [ `task +READY urgency \> 10 count` -gt "0" ]; then echo "❗"; fi'
 #Shows [🔥] at screen hardstatus, when my CPU load average is higher than 8. Increase this number to something that makes sense for the amount of CPUs in your system
 backtick 5 5 5 bash -c 'if (( $(echo "$(cat /proc/loadavg | awk '\''{print $1}'\'') > 8" | bc -l) )); then echo 🔥; fi'
+#Shows [⚡] at the screen hardstatus, when my group's queue has a priority ticket, and [📬] when it is overflowing. (You should have a cronjob putting the number of tickets in the files referenced below)
+backtick 6 5 5 bash -c 'if [ $(cat ~/TicketsGroupPriority) -ge 1 ]; then echo ⚡; elif [ $(cat ~/TicketsGroupAssigned) -ge 10 ]; then echo 📬; fi'
  
 
 ### Logging ###
