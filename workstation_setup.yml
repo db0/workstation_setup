@@ -11,7 +11,7 @@
 
   - name: Install dev ansible
     pip:
-      requirements: /home/db0/ansible/requirements.txt
+      requirements: ~/ansible/requirements.txt
   
   - name: create python -> python3 symlink
     file:
