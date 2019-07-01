@@ -66,15 +66,7 @@ alias lsopen='lsof +aL1'
 #Local aliases for myself.
 alias pycharm='~/Tools/pycharm/latest/bin/pycharm.sh &'
 alias t='task +READY' # Taskwarrior
-if [ ! -z "$PRIV_DESKTOP" ]; then
-   alias ls='exa --git'
-   alias ll='exa --git -larsold'
-   alias ping='prettyping'
-   alias diff='vimdiff'
-   #alias top='htop' # Comment in if you're not using screenFunctions.bash
-   alias rsync='rsync --info=progress2'
-   alias cat='bat'
-else
+if [ -z "$PRIV_DESKTOP" ]; then
    alias ll='ls -lart'
 fi
 

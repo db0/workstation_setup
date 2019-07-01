@@ -8,10 +8,12 @@
     git:
       repo: https://github.com/ansible/ansible.git
       dest: ~/ansible
+    tags: ansible
 
   - name: Install dev ansible
     pip:
       requirements: ~/ansible/requirements.txt
+    tags: ansible
   
   - name: create python -> python3 symlink
     file:
@@ -20,7 +22,8 @@
       state: link
     become: true
     ignore_errors: true
- 
+    tags: os
+
   - name: Install other useful packages
     dnf:
       name: 
@@ -36,6 +39,7 @@
       - geany
       state: latest
     become: true
+    tags: pkgs
 
 
   - name: setup some expected dirs
@@ -45,12 +49,16 @@
     loop:
     - "~/.privIncludes/"
     - "~/git/"
+    tags: 
+    - git
+    - bash
 
   - name: setup my workstation setup repo
     git:
       repo: https://github.com/db0/workstation_setup.git
       dest: ~/git/workstation_setup
       update: no # We just need to make sure it's there
+    tags: git
 
   - name: setup .bash_profile
     file:
@@ -58,23 +66,27 @@
       dest: ~/.bash_profile
       state: link
       force: true
+    tags: bash
 
   - name: setup .bashIncludes
     file:
       src: ~/git/workstation_setup/.bashIncludes
       dest: ~/.bashIncludes
       state: link
+    tags: bash
 
   - name: setup scripts dir
     file:
       src: ~/git/workstation_setup/scripts
       dest: ~/scripts
       state: link
+    tags: bash
 
   - name: delete .bashrc if it exists
     file:
       dest: ~/.bashrc
       state: absent
+    tags: bash
 
   - name: setup basic vars in new .bashrc
     lineinfile:
@@ -88,20 +100,33 @@
     - "source ~/ansible/hacking/env-setup -q"
     - "shopt -q login_shell || source ~/.bash_profile" # We don't want to end up in an infinite loop
     - "[[ -r ~/.bash_completion ]] && source ~/.bash_completion # If you have a bash_completion source, put it here"
+    - "#alias ls='exa --git' # Uncomment to use exa instead of ls"
+    - "#alias ll='exa --git -larsold' # Uncomment to use exa instead of ls"
+    - "#alias cd='pushd >/dev/null' # Uncomment to use popd instead of cd"
+    - "alias ping='prettyping'"
+    - "alias diff='vimdiff'"
+    - "#alias top='htop'" # Comment in .bashrc if you're not using screenFunctions.bash
+    - "alias rsync='rsync --info=progress2'"
+    - "alias cat='bat'"
+    tags: bash
+
 
   - name: setup .screenrc
     file:
       src: ~/git/workstation_setup/.screenrc
       dest: ~/.screenrc
       state: link
+    tags: screen
 
   - name: create .screenrc logs directory
     file:
       dest: ~/.Screenlogs
       state: directory
+    tags: screen
 
   - name: Remove standard ansible now that we have devel
     dnf:
       name: ansible
       state: absent
     become: true
+    tags: ansible
