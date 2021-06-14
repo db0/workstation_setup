@@ -24,6 +24,8 @@ else
       screen -t ""${1##*@}"" ${SCRIPTS}/screen_ssh.sh $*
    elif [ $cmd == "console" ]; then
       screen -t ""${1##*@}-CONS"" ${SCRIPTS}/screen_ssh.sh -tt ${SERV_ACC}@${CONSOLE_SRV} console $* 
+   elif [ $cmd == "vim" ]; then
+      screen -t "$(basename $* | cut -c1-10)" $cmd $*
    else
       screen -t "$cmd $*" $cmd $*
    fi
